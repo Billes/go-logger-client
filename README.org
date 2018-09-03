@@ -1,31 +1,31 @@
 ** Beskrivning
 Enkel go-klient för att skicka loggar till billes logbook
 
-```
+#+BEGIN_EXAMPLE
 go get github.com/billes/go-logger-client
-```
+#+END_EXAMPLE
 
 ** Typdefinitioner
 
 *** Options
-``` 
+#+BEGIN_EXAMPLE 
 type Options struct {
 	host   string // vid tom sträng loggas allt lokalt
 	system string // obligatorisk *
 	token  string // obligatorisk om host finns
 }
-```
+#+END_EXAMPLE
 *** Init
 Obligatorisk. Måste köras en gång innan man börjar logga 
-```
+#+BEGIN_EXAMPLE
 func Init(o Options)
-```
+#+END_EXAMPLE
 *** Logfunktioner
 
-```
+#+BEGIN_EXAMPLE
 func Critical(tags []string, message string, data interface{})
 func Debug(tags []string, message string, data interface{})
 func Error(tags []string, message string, data interface{})
 func Info(tags []string, message string, data interface{})
 func Warning(tags []string, message string, data interface{})
-```
+#+END_EXAMPLE
