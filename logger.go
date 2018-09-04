@@ -2,9 +2,11 @@ package logger
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"github.com/valyala/fasthttp"
 	coreLog "log"
+	"os"
 	"time"
 )
 
@@ -60,6 +62,14 @@ func Error(tags []string, message string, data interface{}) {
 	go log(newEntry(ERROR, tags, message, data))
 }
 
+func Fatal(tags []string, message string, data interface{}) {
+	e := newEntry(CRITICAL, tags, message, data)
+	if err := log(e); err == nil {
+		writeLocalLog(e)
+	}
+	os.Exit(1)
+}
+
 func Info(tags []string, message string, data interface{}) {
 	go log(newEntry(INFO, tags, message, data))
 }
@@ -77,7 +87,7 @@ func newEntry(severity severity, tags []string, message string, data interface{}
 	}
 }
 
-func log(e logEntry) {
+func log(e logEntry) error {
 	if logr == nil {
 		coreLog.Fatal("You need to instantiate the logger first")
 	}
@@ -86,20 +96,24 @@ func log(e logEntry) {
 	if err != nil {
 		writeLocalLog(e)
 		Error([]string{"logging"}, fmt.Sprintf("Could not post to log due to \"data\" wasn't encodable - See local log"), "")
-		return
 	}
 
-	if logr.options.Host == "" {
-		writeLocalLog(e)
-		return
+	if err == nil {
+		err = postLog(body)
+		if err != nil {
+			writeLocalLog(e)
+		}
+		return err
 	}
 
-	if err = postLog(body); err != nil {
-		writeLocalLog(e)
-	}
+	return nil
 }
 
 func postLog(body []byte) error {
+	if logr.options.Host == "" {
+		return errors.New("Host is not set")
+	}
+
 	req := fasthttp.AcquireRequest()
 	req.SetRequestURI(logr.options.Host)
 	req.Header.SetMethod("POST")

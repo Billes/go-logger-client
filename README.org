@@ -21,11 +21,15 @@ Obligatorisk. Måste köras en gång innan man börjar logga
 func Init(o Options)
 #+END_EXAMPLE
 *** Logfunktioner
-
+**** Standard
 #+BEGIN_EXAMPLE
 func Critical(tags []string, message string, data interface{})
 func Debug(tags []string, message string, data interface{})
 func Error(tags []string, message string, data interface{})
 func Info(tags []string, message string, data interface{})
 func Warning(tags []string, message string, data interface{})
+#+END_EXAMPLE
+**** Fatal - Avslutar efter en critical loggning
+#+BEGIN_EXAMPLE
+func Fatal(tags []string, message string, data interface{})
 #+END_EXAMPLE
