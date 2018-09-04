@@ -131,5 +131,5 @@ func writeLocalLog(e logEntry) {
 	t := time.Now()
 	ts := t.Format(format)
 
-	fmt.Printf("%v %v - %v - %v", ts, e.Severity, e.Tags, e.Message)
+	fmt.Printf("%v %v - %v - %v\n", ts, e.Severity, e.Tags, e.Message)
 }
