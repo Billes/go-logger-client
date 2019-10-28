@@ -2,7 +2,7 @@
 Enkel go-klient för att skicka loggar till billes logbook
 
 #+BEGIN_EXAMPLE
-go get github.com/billes/go-logger-client
+go get github.com/Billes/go-logger-client
 #+END_EXAMPLE
 
 ** Typdefinitioner
