@@ -50,6 +50,8 @@ type logger struct {
 const format = "2006-01-02 15:04:05"
 const timeout = 10
 
+var logTags = []string{"logging"}
+
 var logr *logger
 
 // Init bootstraps the config to the logger instance
@@ -60,11 +62,16 @@ func Init(o Options) error {
 
 	if logr != nil {
 		err := errors.New("Trying to instantiate an already instantiated logger")
-		Error([]string{"logging"}, err.Error(), nil)
+		Error(logTags, err.Error(), nil)
 		return err
 	}
 
 	logr = &logger{o}
+
+	if o.Host == "" {
+		Warning(logTags, "Host is not set", nil)
+	}
+
 	return nil
 }
 
@@ -126,7 +133,7 @@ func log(e logEntry) error {
 	body, err := json.Marshal(e)
 	if err != nil {
 		writeLocalLog(e)
-		Error([]string{"logging"}, fmt.Sprintf("Could not post to log due to \"data\" wasn't encodable - See local log"), "")
+		Error(logTags, fmt.Sprintf("Could not post to log due to \"data\" wasn't encodable - See local log"), "")
 	}
 
 	if err == nil {
@@ -155,6 +162,10 @@ func postLog(body []byte) error {
 	client := &fasthttp.Client{}
 
 	err := client.DoTimeout(req, res, time.Duration(logr.options.Timeout)*time.Second)
+	if err != nil && logr.options.Host != "" {
+		entry := newEntry(warningSeverity, logTags, fmt.Sprintf("Failed while sending log entry request: %s", err.Error()), nil)
+		writeLocalLog(entry)
+	}
 	return err
 }
 
