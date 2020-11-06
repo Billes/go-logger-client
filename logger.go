@@ -31,16 +31,12 @@ type logEntry struct {
 // Options is the config that is used for bootstrapping the logger.
 // Default is posting logs to remote server but omitting host will
 // write local logs instead.
-// Local flag decides if local logs should always be written in
-// addition to remote logs, defaults to false.
-// Timeout decides how long a request should be pending before
-// being cancelled and only writing local log.
 type Options struct {
-	Host    string `json:"host"`
-	System  string `json:"system"`
-	Token   string `json:"token"`
-	Local   bool   `json:"local"`
-	Timeout int    `json:"timeout"`
+	Host    string `json:"host"`    // When omitting, logs will be written locally
+	System  string `json:"system"`  // Required
+	Token   string `json:"token"`   // Required if Host is set
+	Local   bool   `json:"local"`   // Default false - If you want to force local logs in addition to the remote ones
+	Timeout int    `json:"timeout"` // Default 10 - How long communication with server is allowed to take before giving up and writing a local log
 }
 
 type logger struct {

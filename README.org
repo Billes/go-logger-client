@@ -10,11 +10,11 @@ go get github.com/Billes/go-logger-client
 *** Options
 #+BEGIN_EXAMPLE 
 type Options struct {
-	Host    string // vid tom sträng loggas allt lokalt
-	System  string // obligatorisk *
-	Token   string // obligatorisk om host finns
-	Local   bool   // Om den alltid ska skriva lokala loggar utöver den vanliga postningen
-	Timeout int		 // Hur länge den ska vänta på att requesten postas innan den avbryter och postar lokalt
+	Host    string
+	System  string
+	Token   string
+	Local   bool
+	Timeout int
 }
 #+END_EXAMPLE
 *** Init
