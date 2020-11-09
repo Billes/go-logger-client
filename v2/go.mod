@@ -1,4 +1,4 @@
-module github.com/Billes/go-logger-client
+module github.com/Billes/go-logger-client/v2
 
 go 1.15
 
