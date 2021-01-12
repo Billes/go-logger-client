@@ -10,11 +10,9 @@ go get github.com/Billes/go-logger-client
 *** Options
 #+BEGIN_EXAMPLE 
 type Options struct {
-	Host    string
-	System  string
-	Token   string
-	Local   bool
-	Timeout int
+	Host   string // vid tom sträng loggas allt lokalt
+	System string // obligatorisk *
+	Token  string // obligatorisk om host finns
 }
 #+END_EXAMPLE
 *** Init
